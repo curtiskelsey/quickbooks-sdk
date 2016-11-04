@@ -1,7 +1,6 @@
 <?php
 
-require_once(PATH_SDK_ROOT . 'Core/Configuration/Request.php');
-require_once(PATH_SDK_ROOT . 'Core/Configuration/Response.php');
+namespace QuickBooks\Core\Configuration;
 
 /**
  * Contains properties about the Request and Response configuration settings.
@@ -26,7 +25,7 @@ class Message
 	 * @param Request $Request Request configuration settings
 	 * @param Response $Response Response configuration settings
 	 */
-	public function __construct($Request=NULL, $Response=NULL)
+	public function __construct($Request=null, $Response=null)
 	{
 		$this->Request = $Request;
 		$this->Response = $Response;

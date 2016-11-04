@@ -22,7 +22,7 @@ class IPPPreferences
      * @param dictionary $keyValInitializers key/value pairs to be populated into object's properties
      * @param boolean $verbose specifies whether object should echo warnings
      */
-    public function __construct($keyValInitializers = array(), $verbose = FALSE)
+    public function __construct($keyValInitializers = [], $verbose = false)
     {
         foreach ($keyValInitializers as $initPropName => $initPropVal) {
             if (property_exists('IPPPreferences', $initPropName)) {

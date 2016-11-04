@@ -31,7 +31,7 @@ if (!$dataService)
 
 
 // Use CDC APIs
-$entityList = array('Customer','Vendor');
+$entityList = ['Customer','Vendor'];
 $changedSince = time() - 50*(24*60*60); // 50 days ago
 
 $cdcResponse = $dataService->CDC($entityList, $changedSince);

@@ -1,9 +1,18 @@
 <?php
 
-require_once(PATH_SDK_ROOT . 'Core/CoreConstants.php');
-require_once(PATH_SDK_ROOT . 'Core/LogRequestsToDisk.php');
-require_once(PATH_SDK_ROOT . 'Utility/Serialization/XmlObjectSerializer.php');
-require_once(PATH_SDK_ROOT . 'Utility/Serialization/JsonObjectSerializer.php');
+namespace QuickBooks\Core;
+
+use BadFunctionCallException;
+use QuickBooks\Core\RestCalls\Compression\DeflateCompressor;
+use QuickBooks\Core\RestCalls\Compression\GZipCompressor;
+use QuickBooks\Diagnostics\TraceLevel;
+use QuickBooks\Exception\IdsException;
+use QuickBooks\Utility\Configuration\CompressionFormat;
+use QuickBooks\Utility\Configuration\SerializationFormat;
+use QuickBooks\Utility\IEntitySerializer;
+use QuickBooks\Utility\Serialization\JsonObjectSerializer;
+use QuickBooks\Utility\Serialization\XmlObjectSerializer;
+use SimpleXMLElement;
 
 /**
  * Helper class.
@@ -20,7 +29,7 @@ require_once(PATH_SDK_ROOT . 'Utility/Serialization/JsonObjectSerializer.php');
  	{
 		$serviceContext->IppConfiguration->Logger->RequestLog->Log(TraceLevel::Info, "GetSerializer");
 
-		$serializer = NULL;
+		$serializer = null;
         if ($isRequest)
         {
             switch ($serviceContext->IppConfiguration->Message->Request->SerializationFormat)
@@ -87,11 +96,11 @@ require_once(PATH_SDK_ROOT . 'Utility/Serialization/JsonObjectSerializer.php');
 			$callerFileName = $backTrace[0]['file'];
 			$callerFileLineNumber = $backTrace[0]['line'];
 			$callerFunctionName = $backTrace[0]['function'];
-			$logMessage = implode(" - ", array(date('Y-m-d H:i:s'),
+			$logMessage = implode(" - ", [date('Y-m-d H:i:s'),
 			                                   $callerFileName,
 			                                   $callerFileLineNumber,
 			                                   $callerFunctionName,
-			                                   $messageToWrite));
+			                                   $messageToWrite]);
         	throw new IdsException($logMessage);
         }
     }
@@ -140,7 +149,7 @@ require_once(PATH_SDK_ROOT . 'Utility/Serialization/JsonObjectSerializer.php');
      */ 
     public static function GetRequestLogging($serviceContext)
     {
-        $requestLogger = NULL;
+        $requestLogger = null;
         try {
 	        if (isset($serviceContext->IppConfiguration) &&
 	            isset($serviceContext->IppConfiguration->Logger) &&
@@ -157,7 +166,7 @@ require_once(PATH_SDK_ROOT . 'Utility/Serialization/JsonObjectSerializer.php');
 	            $requestLogger = new LogRequestsToDisk(false, null);
 	        }
         }
-        catch(Exception $e)
+        catch(\Exception $e)
         {
             $requestLogger = new LogRequestsToDisk(false, null);
         }

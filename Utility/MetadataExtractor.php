@@ -1,13 +1,15 @@
 <?php
-namespace Intuit\Ipp\Utility;
+
+namespace QuickBooks\Utility;
+
+use QuickBooks\Utility\Serialization\AbstractEntity;
+use QuickBooks\Utility\Serialization\ObjectEntity;
+use QuickBooks\Utility\Serialization\SimpleEntity;
+use QuickBooks\Utility\Serialization\UnknownEntity;
 use ReflectionProperty;
 use RuntimeException;
 use UnexpectedValueException;
 use InvalidArgumentException;
-use Intuit\Ipp\Utility\Serialization\SimpleEntity;
-use Intuit\Ipp\Utility\Serialization\ObjectEntity;
-use Intuit\Ipp\Utility\Serialization\UnknownEntity;
-use Intuit\Ipp\Utility\Serialization\AbstractEntity;
 
 /**
  * Extracts metadata for properties and decides which type is associated with this property
@@ -18,7 +20,7 @@ class MetadataExtractor {
     const REGULAR_GET_VAR = "/@var\s+(.*)/";
 
     public function processComments(array $properties) {
-        $result = array();
+        $result = [];
         foreach($properties as $key=>$value) {
             // skip none-properties
             if(!$value instanceof ReflectionProperty) { continue; }
@@ -33,22 +35,23 @@ class MetadataExtractor {
         }
        return $result;
     }
-    
-    
+
+
     /**
      * Returns value of @var from text. It also returns last part (class name) of path-like value
-     * 
+     *
      * TODO Move this function into separate object outside of this class.
      * Domain Entity builder doesn't care about how values are parsed.
      * It's better to apply dependecy-injection pattern here.
-     * 
+     *
      * The only reason this function is here is for initial implementation.
-     * 
+     *
      * @param type $text
+     * @return null
      */
     private function extractVarValueFromComment($text)
     {
-         $matches = array(); 
+         $matches = [];
          $result = preg_match_all(self::REGULAR_GET_VAR, $text,$matches);
          //handle errors
          if(false === $result) {
@@ -80,7 +83,7 @@ class MetadataExtractor {
     private function verifyVariableType($value)
     {
        // if value can be mapped to simple type  
-       if(in_array(strtolower($value), array("string","float","double","boolean", "integer"))) {
+       if(in_array(strtolower($value), ["string","float","double","boolean", "integer"])) {
            return new SimpleEntity(strtolower($value));
        }
        
@@ -102,7 +105,7 @@ class MetadataExtractor {
      */
     private function generateObjectNames($value)
     {
-        $reversiveStack = array();
+        $reversiveStack = [];
         $reversiveStack[] = $value; // add original value. It will be called last
         $reversiveStack[] = $this->removeArrayBrackets($value); // 
         $reversiveStack[] = $this->getIntuitName($this->removeArrayBrackets($value));      
@@ -120,7 +123,7 @@ class MetadataExtractor {
      */
     private function removeArrayBrackets($string)
     {
-        return str_replace(array('[',']'), array('',''), $string);
+        return str_replace(['[',']'], ['',''], $string);
     
     }
     

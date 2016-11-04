@@ -1,5 +1,6 @@
 <?php
-namespace Intuit\Ipp\Utility\Serialization;
+
+namespace QuickBooks\Utility\Serialization;
 
 /**
  * Descirbes meta data for domain model entity 

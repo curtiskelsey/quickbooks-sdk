@@ -21,7 +21,7 @@ class IPPDesktopEntityTypeEnum
      * @param dictionary $keyValInitializers key/value pairs to be populated into object's properties
      * @param boolean $verbose specifies whether object should echo warnings
      */
-    public function __construct($keyValInitializers = array(), $verbose = FALSE)
+    public function __construct($keyValInitializers = [], $verbose = false)
     {
         foreach ($keyValInitializers as $initPropName => $initPropVal) {
             if (property_exists('IPPDesktopEntityTypeEnum', $initPropName)) {
@@ -96,7 +96,7 @@ class IPPDesktopEntityTypeEnum
     const IPPDESKTOPENTITYTYPEENUM_VENDOR = "VENDOR";
     const IPPDESKTOPENTITYTYPEENUM_EMPLOYEE = "EMPLOYEE";
     const IPPDESKTOPENTITYTYPEENUM_OTHERNAME = "OTHERNAME";
-    const IPPDESKTOPENTITYTYPEENUM_NULLLINKTYPE = "NULLLINKTYPE";
+    const IPPDESKTOPENTITYTYPEENUM_nullLINKTYPE = "nullLINKTYPE";
     const IPPDESKTOPENTITYTYPEENUM_UNUSED1 = "UNUSED1";
     const IPPDESKTOPENTITYTYPEENUM_REFUNDCHECKTOCRMEMO = "REFUNDCHECKTOCRMEMO";
     const IPPDESKTOPENTITYTYPEENUM_INVOICETOCRMEMO = "INVOICETOCRMEMO";

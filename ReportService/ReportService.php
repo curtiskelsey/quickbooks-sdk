@@ -1,9 +1,16 @@
 <?php
-require_once(PATH_SDK_ROOT . 'Core/CoreHelper.php');
-require_once(PATH_SDK_ROOT . 'Core/ContentWriter.php');
-require_once(PATH_SDK_ROOT . 'Core/OperationControlList.php');
-require_once(PATH_SDK_ROOT . 'DataService/Batch.php');
-require_once(PATH_SDK_ROOT . 'DataService/IntuitCDCResponse.php');
+
+namespace QuickBooks\ReportService;
+
+use QuickBooks\Core\CoreConstants;
+use QuickBooks\Core\CoreHelper;
+use QuickBooks\Core\Interfaces\IRestHandler;
+use QuickBooks\Core\RestCalls\RequestParameters;
+use QuickBooks\Core\RestCalls\SyncRestHandler;
+use QuickBooks\Core\ServiceContext;
+use QuickBooks\Exception\SdkExceptions\InvalidParameterException;
+use QuickBooks\Utility\Configuration\SerializationFormat;
+use QuickBooks\Utility\IEntitySerializer;
 
 class ReportService
 {
@@ -784,15 +791,18 @@ class ReportService
      * Returns serializer for responce objects
      * @return IEntitySerializer
      */
-    public function getResponseSerializer() {
+    public function getResponseSerializer()
+    {
         return $this->responseSerializer;
     }
 
-    public function getServiceContext(){
+    public function getServiceContext()
+    {
         return $this->serviceContext;
     }
 
-    public function getRestHandler(){
+    public function getRestHandler()
+    {
         return $this->restHandler;
     }
 
@@ -802,9 +812,10 @@ class ReportService
      * @param ServiceContext $serviceContext IPP Service Context
      * @throws
      */
-    public function __construct($serviceContext) {
-        if (NULL == $serviceContext) {
-            throw new InvalidArgumentException('Resources.ServiceContextCannotBeNull');
+    public function __construct($serviceContext)
+    {
+        if (null == $serviceContext) {
+            throw new \InvalidArgumentException('Resources.ServiceContextCannotBeNull');
         }
 
         if (!is_object($serviceContext)) {
@@ -829,162 +840,164 @@ class ReportService
     /**
      * Setups serializers objects for responces and requests based on service context
      */
-    private function setupSerializers() {
+    private function setupSerializers()
+    {
         $this->responseSerializer = CoreHelper::GetSerializer($this->serviceContext, false);
     }
 
     private function useMinorVersion()
     {
         $version = $this->serviceContext->IppConfiguration->minorVersion;
-        if(is_numeric($version) && !empty($version)) {
+        if (is_numeric($version) && !empty($version)) {
             $this->serviceContext->minorVersion = $version;
         }
     }
 
-    private function getReportQueryParameters(){
-        $uriParameterList = array();
+    private function getReportQueryParameters()
+    {
+        $uriParameterList = [];
         $uriParameterString = null;
 
-        if (!is_null($this->report_date)){
-            array_push($uriParameterList, array("report_date", $this->getReportDate()) );
+        if (!is_null($this->report_date)) {
+            array_push($uriParameterList, ["report_date", $this->getReportDate()]);
         }
-        if (!is_null($this->start_date)){
-            array_push($uriParameterList, array("start_date", $this->getStartDate()) );
+        if (!is_null($this->start_date)) {
+            array_push($uriParameterList, ["start_date", $this->getStartDate()]);
         }
-        if (!is_null($this->end_date)){
-            array_push($uriParameterList, array("end_date", $this->getEndDate()) );
+        if (!is_null($this->end_date)) {
+            array_push($uriParameterList, ["end_date", $this->getEndDate()]);
         }
-        if (!is_null($this->date_macro)){
-            array_push($uriParameterList, array("date_macro", $this->getDateMacro()) );
+        if (!is_null($this->date_macro)) {
+            array_push($uriParameterList, ["date_macro", $this->getDateMacro()]);
         }
-        if (!is_null($this->past_due)){
-            array_push($uriParameterList, array("past_due", $this->getPastDue()) );
+        if (!is_null($this->past_due)) {
+            array_push($uriParameterList, ["past_due", $this->getPastDue()]);
         }
-        if (!is_null($this->end_duedate)){
-            array_push($uriParameterList, array("end_duedate", $this->getEndDuedate()) );
+        if (!is_null($this->end_duedate)) {
+            array_push($uriParameterList, ["end_duedate", $this->getEndDuedate()]);
         }
-        if (!is_null($this->start_duedate)){
-            array_push($uriParameterList, array("start_duedate", $this->getStartDuedate()) );
+        if (!is_null($this->start_duedate)) {
+            array_push($uriParameterList, ["start_duedate", $this->getStartDuedate()]);
         }
-        if (!is_null($this->duedate_macro)){
-            array_push($uriParameterList, array("duedate_macro", $this->getDuedateMacro()) );
+        if (!is_null($this->duedate_macro)) {
+            array_push($uriParameterList, ["duedate_macro", $this->getDuedateMacro()]);
         }
-        if (!is_null($this->accounting_method)){
-            array_push($uriParameterList, array("accounting_method", $this->getAccountingMethod()) );
+        if (!is_null($this->accounting_method)) {
+            array_push($uriParameterList, ["accounting_method", $this->getAccountingMethod()]);
         }
-        if (!is_null($this->account)){
-            array_push($uriParameterList, array("account", $this->getAccount()) );
+        if (!is_null($this->account)) {
+            array_push($uriParameterList, ["account", $this->getAccount()]);
         }
         //-----------------------------------------------------------------------------------------------
-        if (!is_null($this->source_account)){
-            array_push($uriParameterList, array("source_account", $this->getSourceAccount()) );
+        if (!is_null($this->source_account)) {
+            array_push($uriParameterList, ["source_account", $this->getSourceAccount()]);
         }
-        if (!is_null($this->account_type)){
-            array_push($uriParameterList, array("account_type", $this->getAccountType()) );
+        if (!is_null($this->account_type)) {
+            array_push($uriParameterList, ["account_type", $this->getAccountType()]);
         }
-        if (!is_null($this->source_account_type)){
-            array_push($uriParameterList, array("source_account_type", $this->getSourceAccountType()) );
+        if (!is_null($this->source_account_type)) {
+            array_push($uriParameterList, ["source_account_type", $this->getSourceAccountType()]);
         }
-        if (!is_null($this->summarize_column_by)){
-            array_push($uriParameterList, array("summarize_column_by", $this->getSummarizeColumnBy()) );
+        if (!is_null($this->summarize_column_by)) {
+            array_push($uriParameterList, ["summarize_column_by", $this->getSummarizeColumnBy()]);
         }
-        if (!is_null($this->customer)){
-            array_push($uriParameterList, array("customer", $this->getCustomer()) );
+        if (!is_null($this->customer)) {
+            array_push($uriParameterList, ["customer", $this->getCustomer()]);
         }
-        if (!is_null($this->vendor)){
-            array_push($uriParameterList, array("vendor", $this->getVendor()) );
+        if (!is_null($this->vendor)) {
+            array_push($uriParameterList, ["vendor", $this->getVendor()]);
         }
-        if (!is_null($this->item)){
-            array_push($uriParameterList, array("item", $this->getItem()) );
+        if (!is_null($this->item)) {
+            array_push($uriParameterList, ["item", $this->getItem()]);
         }
-        if (!is_null($this->classid)){
-            array_push($uriParameterList, array("classid", $this->getClassid()) );
+        if (!is_null($this->classid)) {
+            array_push($uriParameterList, ["classid", $this->getClassid()]);
         }
-        if (!is_null($this->appaid)){
-            array_push($uriParameterList, array("appaid", $this->getAppaid()) );
+        if (!is_null($this->appaid)) {
+            array_push($uriParameterList, ["appaid", $this->getAppaid()]);
         }
-        if (!is_null($this->department)){
-            array_push($uriParameterList, array("department", $this->getDepartment()) );
+        if (!is_null($this->department)) {
+            array_push($uriParameterList, ["department", $this->getDepartment()]);
         }
         //---------------------------------------------------------------------------------------------
-        if (!is_null($this->qzurl)){
-            array_push($uriParameterList, array("qzurl", $this->getQzurl()) );
+        if (!is_null($this->qzurl)) {
+            array_push($uriParameterList, ["qzurl", $this->getQzurl()]);
         }
-        if (!is_null($this->aging_period)){
-            array_push($uriParameterList, array("aging_period", $this->getAgingPeriod()) );
+        if (!is_null($this->aging_period)) {
+            array_push($uriParameterList, ["aging_period", $this->getAgingPeriod()]);
         }
-        if (!is_null($this->aging_method)){
-            array_push($uriParameterList, array("aging_method", $this->getAgingMethod()) );
+        if (!is_null($this->aging_method)) {
+            array_push($uriParameterList, ["aging_method", $this->getAgingMethod()]);
         }
-        if (!is_null($this->num_periods)){
-            array_push($uriParameterList, array("num_periods", $this->getNumPeriods()) );
+        if (!is_null($this->num_periods)) {
+            array_push($uriParameterList, ["num_periods", $this->getNumPeriods()]);
         }
-        if (!is_null($this->term)){
-            array_push($uriParameterList, array("term", $this->getTerm()) );
+        if (!is_null($this->term)) {
+            array_push($uriParameterList, ["term", $this->getTerm()]);
         }
-        if (!is_null($this->columns)){
-            array_push($uriParameterList, array("columns", $this->getColumns()) );
+        if (!is_null($this->columns)) {
+            array_push($uriParameterList, ["columns", $this->getColumns()]);
         }
-        if (!is_null($this->sort_by)){
-            array_push($uriParameterList, array("sort_by", $this->getSortBy()) );
+        if (!is_null($this->sort_by)) {
+            array_push($uriParameterList, ["sort_by", $this->getSortBy()]);
         }
-        if (!is_null($this->sort_order)){
-            array_push($uriParameterList, array("sort_order", $this->getSortOrder()) );
+        if (!is_null($this->sort_order)) {
+            array_push($uriParameterList, ["sort_order", $this->getSortOrder()]);
         }
-        if (!is_null($this->group_by)){
-            array_push($uriParameterList, array("group_by", $this->getGroupBy()) );
+        if (!is_null($this->group_by)) {
+            array_push($uriParameterList, ["group_by", $this->getGroupBy()]);
         }
-        if (!is_null($this->createdate_macro)){
-            array_push($uriParameterList, array("createdate_macro", $this->getCreatedateMacro()) );
+        if (!is_null($this->createdate_macro)) {
+            array_push($uriParameterList, ["createdate_macro", $this->getCreatedateMacro()]);
         }
         //-----------------------------------------------------------------------------------------------
-        if (!is_null($this->end_createdate)){
-            array_push($uriParameterList, array("end_createdate", $this->getEndCreatedate()) );
+        if (!is_null($this->end_createdate)) {
+            array_push($uriParameterList, ["end_createdate", $this->getEndCreatedate()]);
         }
-        if (!is_null($this->start_createdate)){
-            array_push($uriParameterList, array("start_createdate", $this->getStartCreatedate()) );
+        if (!is_null($this->start_createdate)) {
+            array_push($uriParameterList, ["start_createdate", $this->getStartCreatedate()]);
         }
-        if (!is_null($this->moddate_macro)){
-            array_push($uriParameterList, array("moddate_macro", $this->getModdateMacro()) );
+        if (!is_null($this->moddate_macro)) {
+            array_push($uriParameterList, ["moddate_macro", $this->getModdateMacro()]);
         }
-        if (!is_null($this->end_moddate)){
-            array_push($uriParameterList, array("end_moddate", $this->getEndModdate()) );
+        if (!is_null($this->end_moddate)) {
+            array_push($uriParameterList, ["end_moddate", $this->getEndModdate()]);
         }
-        if (!is_null($this->start_moddate)){
-            array_push($uriParameterList, array("start_moddate", $this->getStartModdate()) );
+        if (!is_null($this->start_moddate)) {
+            array_push($uriParameterList, ["start_moddate", $this->getStartModdate()]);
         }
-        if (!is_null($this->payment_method)){
-            array_push($uriParameterList, array("payment_method", $this->getPaymentMethod()) );
+        if (!is_null($this->payment_method)) {
+            array_push($uriParameterList, ["payment_method", $this->getPaymentMethod()]);
         }
-        if (!is_null($this->name)){
-            array_push($uriParameterList, array("name", $this->getName()) );
+        if (!is_null($this->name)) {
+            array_push($uriParameterList, ["name", $this->getName()]);
         }
-        if (!is_null($this->transaction_type)){
-            array_push($uriParameterList, array("transaction_type", $this->getTransactionType()) );
+        if (!is_null($this->transaction_type)) {
+            array_push($uriParameterList, ["transaction_type", $this->getTransactionType()]);
         }
-        if (!is_null($this->cleared)){
-            array_push($uriParameterList, array("cleared", $this->getCleared()) );
+        if (!is_null($this->cleared)) {
+            array_push($uriParameterList, ["cleared", $this->getCleared()]);
         }
-        if (!is_null($this->arpaid)){
-            array_push($uriParameterList, array("arpaid", $this->getArpaid()) );
+        if (!is_null($this->arpaid)) {
+            array_push($uriParameterList, ["arpaid", $this->getArpaid()]);
         }
         //-------------------------------------------------------------------------------------------------
-        if (!is_null($this->printed)){
-            array_push($uriParameterList, array("printed", $this->getPrinted()) );
+        if (!is_null($this->printed)) {
+            array_push($uriParameterList, ["printed", $this->getPrinted()]);
         }
-        if (!is_null($this->both_amount)){
-            array_push($uriParameterList, array("both_amount", $this->getBothAmount()) );
+        if (!is_null($this->both_amount)) {
+            array_push($uriParameterList, ["both_amount", $this->getBothAmount()]);
         }
-        if (!is_null($this->memo)){
-            array_push($uriParameterList, array("memo", $this->getMemo()) );
+        if (!is_null($this->memo)) {
+            array_push($uriParameterList, ["memo", $this->getMemo()]);
         }
-        if (!is_null($this->doc_num)){
-            array_push($uriParameterList, array("doc_num", $this->getDocNum()) );
+        if (!is_null($this->doc_num)) {
+            array_push($uriParameterList, ["doc_num", $this->getDocNum()]);
         }
 
 
-        foreach ($uriParameterList as $uriParameter){
-            if(sizeof($uriParameterString) > 0){
+        foreach ($uriParameterList as $uriParameter) {
+            if (sizeof($uriParameterString) > 0) {
                 $uriParameterString .= "&";
             }
             $uriParameterString .= $uriParameter[0];
@@ -998,50 +1011,52 @@ class ReportService
     }
 
     // This modification is done to add a Report envelope for proper deserialization.
-    private function modifyReportResponse($reportResponse){
+    private function modifyReportResponse($reportResponse)
+    {
         $modifiedReportResponse = '{"Report":' . $reportResponse . '}';
         return $modifiedReportResponse;
 
     }
-    public function executeReport($reportName){
+
+    public function executeReport($reportName)
+    {
         $urlResource = "reports";
         $querySeparator = "?";
         $reportQueryParameters = $this->getReportQueryParameters();
 
-        if ($reportQueryParameters){
-            $httpRequestUri = implode(CoreConstants::SLASH_CHAR, array('company', $this->serviceContext->realmId, $urlResource, $reportName, $querySeparator));
-            $httpRequestUri .=  $reportQueryParameters;
-        }
-        else{
-            $httpRequestUri = implode(CoreConstants::SLASH_CHAR, array('company', $this->serviceContext->realmId, $urlResource, $reportName));
+        if ($reportQueryParameters) {
+            $httpRequestUri = implode(CoreConstants::SLASH_CHAR, ['company', $this->serviceContext->realmId, $urlResource, $reportName, $querySeparator]);
+            $httpRequestUri .= $reportQueryParameters;
+        } else {
+            $httpRequestUri = implode(CoreConstants::SLASH_CHAR, ['company', $this->serviceContext->realmId, $urlResource, $reportName]);
         }
 
 
         // Creates request parameters
         if ($this->serviceContext->IppConfiguration->Message->Request->SerializationFormat == SerializationFormat::Json) {
             //echo("Content Type JSON");
-            $requestParameters = new RequestParameters($httpRequestUri, 'GET', CoreConstants::CONTENTTYPE_APPLICATIONJSON, NULL);
+            $requestParameters = new RequestParameters($httpRequestUri, 'GET', CoreConstants::CONTENTTYPE_APPLICATIONJSON, null);
         } else {
             //echo("Content Type XML");
-            $requestParameters = new RequestParameters($httpRequestUri, 'GET', CoreConstants::CONTENTTYPE_APPLICATIONXML, NULL);
+            $requestParameters = new RequestParameters($httpRequestUri, 'GET', CoreConstants::CONTENTTYPE_APPLICATIONXML, null);
         }
 
         $restRequestHandler = new SyncRestHandler($this->serviceContext);
 
         try {
-            list($responseCode, $responseBody) = $restRequestHandler->GetResponse($requestParameters, NULL, NULL);
-        } catch (Exception $e) {
-            return NULL;
+            list($responseCode, $responseBody) = $restRequestHandler->GetResponse($requestParameters, null, null);
+        } catch (\Exception $e) {
+            return null;
         }
 
         CoreHelper::CheckNullResponseAndThrowException($responseBody);
 
         try {
             $responseBody = $this->modifyReportResponse($responseBody);
-            $parsedResponseBody = $this->getResponseSerializer()->Deserialize($responseBody, TRUE);
+            $parsedResponseBody = $this->getResponseSerializer()->Deserialize($responseBody, true);
 
-        } catch (Exception $e) {
-            return NULL;
+        } catch (\Exception $e) {
+            return null;
         }
 
         return ($parsedResponseBody);

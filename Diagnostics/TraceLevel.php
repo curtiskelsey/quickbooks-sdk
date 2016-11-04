@@ -1,5 +1,7 @@
 <?php
 
+namespace QuickBooks\Diagnostics;
+
 /**
  * This file defines the trace levels.
  */
@@ -35,5 +37,3 @@ class TraceLevel
 	 */
     const Verbose = 4;
 }
-
-?>

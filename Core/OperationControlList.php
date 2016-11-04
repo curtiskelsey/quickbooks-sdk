@@ -1,34 +1,38 @@
 <?php
 
+namespace QuickBooks\Core;
+
 /**
  * Provides controll over executable operations per described entities
  * Supports wildcards as global level.
- * 
+ *
  * For instance, following array will set any operation available for any entity:
  * array( "*" => array( "*" => true ));
  *
  * Next example will restrict an operation for all entities, except Foo
- * array( 
+ * array(
  *  "*"   => array( "operation" => false ),
  *  "Foo" => array( "operation" => true  ),
  * );
- * 
+ *
  * @author amatiushkin
  */
-class OperationControlList {
-    private $operationList = array();
+class OperationControlList
+{
+    private $operationList = [];
     const ALL = '*';
-    
+
     /**
      * It is possible to specify rules upon instance creation
      * In common it used to add first global rule, e.g.
-     * 
+     *
      * Next line of code will enable all for all:
      *  new OperationControlList( OperationControlList::getDefaultList(true) )
-     * 
+     *
      * @param type $array
      */
-    public function __construct($array = array()) {
+    public function __construct($array = [])
+    {
         $this->setOperationList($array);
     }
 
@@ -40,7 +44,7 @@ class OperationControlList {
     {
         $this->operationList = $array;
     }
-    
+
     /**
      * Returns current operations control list
      * @return type
@@ -49,7 +53,7 @@ class OperationControlList {
     {
         return $this->operationList;
     }
-    
+
     /**
      * Verifies if operation is available for some entity
      * @param string $entity
@@ -59,40 +63,40 @@ class OperationControlList {
     public function isAllowed($entity, $operation)
     {
         //fallback to global rules if entity wasn't specified in the rules
-        $lookupEn = array_key_exists($entity, $this->operationList) 
-                            ? $entity 
-                            : self::ALL;
-        
+        $lookupEn = array_key_exists($entity, $this->operationList)
+            ? $entity
+            : self::ALL;
+
         //fallback to global rules if operation wasn't specified in the rules
         $lookupOp = array_key_exists($operation, $this->operationList[$lookupEn])
-                            ? $operation
-                            : self::ALL;
-        
+            ? $operation
+            : self::ALL;
+
         // entity and operation were found as is
-        if( ($entity === $lookupEn) && ($operation === $lookupOp) ) {
-            return $this->operationList[$lookupEn][$lookupOp];
-        } 
-        
-        //lookup for operation for current entity if it exists 
-        if(array_key_exists($lookupOp, $this->operationList[$lookupEn])) {
+        if (($entity === $lookupEn) && ($operation === $lookupOp)) {
             return $this->operationList[$lookupEn][$lookupOp];
         }
-        
+
         //lookup for operation for current entity if it exists 
-        if(array_key_exists($operation, $this->operationList[self::ALL])) {
+        if (array_key_exists($lookupOp, $this->operationList[$lookupEn])) {
+            return $this->operationList[$lookupEn][$lookupOp];
+        }
+
+        //lookup for operation for current entity if it exists 
+        if (array_key_exists($operation, $this->operationList[self::ALL])) {
             return $this->operationList[self::ALL][$operation];
-        }        
-        
+        }
+
         //fallback to global entity
-        if(array_key_exists($lookupOp, $this->operationList[self::ALL])) {
+        if (array_key_exists($lookupOp, $this->operationList[self::ALL])) {
             return $this->operationList[self::ALL][$lookupOp];
-        } 
-        
+        }
+
         //fall back to global entity and operation
         return $this->operationList[self::ALL][self::ALL];
-        
+
     }
-    
+
     /**
      * Returns global configuration array (in other words global rule)
      * @param bool $value
@@ -100,18 +104,20 @@ class OperationControlList {
      */
     public static function getDefaultList($value)
     {
-        return array(self::ALL => array(self::ALL => $value));
+        return [self::ALL => [self::ALL => $value]];
     }
-    
+
     /**
      * Appends rules to existing list
      * @param type $array
      */
-    public function appendRules($array = array())
+    public function appendRules($array = [])
     {
-        $this->setOperationList(array_merge_recursive($this->getOperationList(), $array));
+        $this->setOperationList(
+            array_merge_recursive(
+                $this->getOperationList(),
+                $array
+            )
+        );
     }
-
-    
-    
 }

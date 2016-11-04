@@ -1,5 +1,9 @@
 <?php
 
+namespace QuickBooks\DataService;
+
+use QuickBooks\Exception\IdsException;
+
 /**
  * This class processes the batch request.
  */
@@ -46,7 +50,7 @@ class IntuitBatchResponse {
 	 */
 	public function __construct()
 	{
-        $this->entities = array();
+        $this->entities = [];
 	}
 	
 	/**

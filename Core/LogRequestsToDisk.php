@@ -1,5 +1,9 @@
 <?php
 
+namespace QuickBooks\Core;
+
+use QuickBooks\Exception\IdsException;
+
 /**
  * Logs API Requests/Responses To Disk
  */
@@ -22,7 +26,7 @@ class LogRequestsToDisk {
 	 * @param bool enableServiceRequestLogging Value indicating whether to log request response messages
 	 * @param string serviceRequestLoggingLocation Request Response logging locationl
 	 */
-	public function __construct($enableServiceRequestLogging=FALSE,$serviceRequestLoggingLocation=NULL)
+	public function __construct($enableServiceRequestLogging=false,$serviceRequestLoggingLocation=null)
 	{
 		$this->EnableServiceRequestsLogging = $enableServiceRequestLogging;
 		$this->ServiceRequestLoggingLocation = $serviceRequestLoggingLocation;
@@ -36,39 +40,44 @@ class LogRequestsToDisk {
 	{
 		if ($this->EnableServiceRequestsLogging)
 		{
-		    if (FALSE === file_exists($this->ServiceRequestLoggingLocation))
+		    if (false === file_exists($this->ServiceRequestLoggingLocation))
 		    {
 		        $this->ServiceRequestLoggingLocation = sys_get_temp_dir();
 		    }
 		}
 		return $this->ServiceRequestLoggingLocation;
 	}
-	
-	/**
-	 * Logs the Platform Request to Disk.
-	 * @param string xml The xml to log.
-	 * @param string url of the request/response
-	 * @param array headers HTTP headers of the request/response
-	 * @param bool isRequest Specifies whether the xml is request or response.
-	 */
+
+    /**
+     * Logs the Platform Request to Disk.
+     * @param $xml
+     * @param $url
+     * @param $headers
+     * @param $isRequest
+     * @throws IdsException
+     * @internal param xml $string The xml to log.
+     * @internal param url $string of the request/response
+     * @internal param headers $array HTTP headers of the request/response
+     * @internal param isRequest $bool Specifies whether the xml is request or response.
+     */
     public function LogPlatformRequests($xml, $url, $headers, $isRequest)
     {
         if ($this->EnableServiceRequestsLogging)
         {
-            if (FALSE === file_exists($this->ServiceRequestLoggingLocation))
+            if (false === file_exists($this->ServiceRequestLoggingLocation))
             {
                 $this->ServiceRequestLoggingLocation = sys_get_temp_dir();
             }
             
             // Use filecount to have some sort of sequence number for debugging purposes - 5 digits
-			$sequenceNumber = iterator_count(new DirectoryIterator($this->ServiceRequestLoggingLocation));
+			$sequenceNumber = iterator_count(new \DirectoryIterator($this->ServiceRequestLoggingLocation));
 			$sequenceNumber = str_pad((int)$sequenceNumber,5,"0",STR_PAD_LEFT);
 		
 			$iter = 0;
-            $filePath = NULL;
+            $filePath = null;
 			do
 			{
-	            $filePath = NULL;
+	            $filePath = null;
 	            if ($isRequest)
 	            {
 					$filePath = CoreConstants::REQUESTFILENAME_FORMAT;
@@ -87,7 +96,7 @@ class LogRequestsToDisk {
 			
             try
             {
-				$collapsedHeaders = array();
+				$collapsedHeaders = [];
 				foreach($headers as $key=>$val)
 					$collapsedHeaders[] = "{$key}: {$val}";
             	
@@ -101,7 +110,7 @@ class LogRequestsToDisk {
             	                  ($isRequest?"REQUEST":"RESPONSE")." BODY\n=============\n".$xml."\n\n",
             	                  FILE_APPEND);
             }
-            catch (Exception $e)
+            catch (\Exception $e)
             {
                 throw new IdsException("Exception during LogPlatformRequests.");
             }

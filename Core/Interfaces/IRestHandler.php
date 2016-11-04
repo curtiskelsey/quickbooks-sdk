@@ -1,5 +1,9 @@
 <?php
 
+namespace QuickBooks\Core\Interfaces;
+
+use QuickBooks\Core\ServiceContext;
+
 /**
  * IRestHandler contains the methods for preparing the REST request, calls REST services and returns the response.
  */

@@ -1,61 +1,64 @@
 <?php
 
+namespace QuickBooks\Core\RestCalls;
+
+use QuickBooks\Core\ServiceContext;
+use QuickBooks\Exception\IdsException;
+
 /**
  * Handles the fault tags in the response and handles them.
  */
 class FaultHandler
 {
-	/**
-	 * The Service Context
-	 * @var ServiceContext context
-	 */
+    /**
+     * The Service Context
+     * @var ServiceContext context
+     */
     private $context;
 
-	/**
-	 * Initializes a new instance of the FaultHandler class.
-	 * @param ServiceContext context
-	 */
+    /**
+     * Initializes a new instance of the FaultHandler class.
+     * @param ServiceContext context
+     */
     public function __construct($context)
     {
         $this->context = $context;
     }
-    
-	/**
-	 * Parses the Response and throws appropriate exceptions.
-	 * @param WebException webException
-	 * @param int StatusCode HTTP Response code
-	 * @param bool isIpp
-	 * @return IdsException
-	 */
-    public function ParseResponseAndThrowException($webException, $StatusCode, $isIpp = FALSE)
+
+    /**
+     * Parses the Response and throws appropriate exceptions.
+     * @param WebException webException
+     * @param int StatusCode HTTP Response code
+     * @param bool isIpp
+     * @return IdsException
+     */
+    public function ParseResponseAndThrowException($webException, $StatusCode, $isIpp = false)
     {
-        $idsException = NULL;
+        $idsException = null;
 
         // Checks whether the webException is null or not.
-        if ($webException != NULL)
-        {
+        if ($webException != null) {
             // Ids will set the following error codes. Depending on that we will be throwing specific exceptions.
-            switch ($StatusCode)
-            {
-            	// HTTP OK: 200
-            	case 200:
-            		break;
+            switch ($StatusCode) {
+                // HTTP OK: 200
+                case 200:
+                    break;
                 // Bad Request: 400
                 case 400:
-                // Unauthorized: 401
+                    // Unauthorized: 401
                 case 401:
-                // ServiceUnavailable: 503
+                    // ServiceUnavailable: 503
                 case 503:
-                // InternalServerError: 500
+                    // InternalServerError: 500
                 case 500:
-                // Forbidden: 403
+                    // Forbidden: 403
                 case 403:
-                // NotFound: 404
+                    // NotFound: 404
                 case 404:
-                // Default. Throw generic exception i.e. IdsException.
+                    // Default. Throw generic exception i.e. IdsException.
                 default:
-					$idsException = new IdsException("HTTP Response: $StatusCode");
-					break;
+                    $idsException = new IdsException("HTTP Response: $StatusCode");
+                    break;
             }
         }
 
@@ -63,4 +66,3 @@ class FaultHandler
         return $idsException;
     }
 }
-?>

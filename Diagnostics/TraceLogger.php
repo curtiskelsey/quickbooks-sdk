@@ -1,7 +1,6 @@
 <?php
 
-require_once(PATH_SDK_ROOT . 'Diagnostics/Logger.php');
-require_once(PATH_SDK_ROOT . 'Diagnostics/TraceLevel.php');
+namespace QuickBooks\Diagnostics;
 
 /**
  * This file contains Trace Logger.
@@ -41,13 +40,12 @@ class TraceLogger extends Logger {
         $callerFileName = $backTrace[0]['file'];
         $callerFileLineNumber = $backTrace[0]['line'];
         $callerFunctionName = $backTrace[0]['function'];
-        $logMessage = implode(" - ", array(date('Y-m-d H:i:s'),
+        $logMessage = implode(" - ", [date('Y-m-d H:i:s'),
                                            $callerFileName,
                                            $callerFileLineNumber,
                                            $callerFunctionName,
-                                           $messageToWrite));
+                                           $messageToWrite]);
                                            
         parent::Log($idsTraceLevel, $logMessage);
 	}	 
 }
-?>

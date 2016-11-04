@@ -1,7 +1,6 @@
 <?php
 
-require_once(PATH_SDK_ROOT . 'Diagnostics/TraceLevel.php');
-
+namespace QuickBooks\Diagnostics;
 
 /**
  * This file contains an interface for Logging.
@@ -20,5 +19,3 @@ class Logger {
 		file_put_contents(PATH_SDK_ROOT . 'executionlog.txt', $messageToWrite."\n", FILE_APPEND);
 	}
 }
-
-?>

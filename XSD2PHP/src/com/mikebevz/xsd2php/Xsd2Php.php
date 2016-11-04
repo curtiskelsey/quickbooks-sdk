@@ -98,14 +98,14 @@ class Xsd2Php extends Common
      * 
      * @var array
      */
-    private $loadedImportFiles = array();
+    private $loadedImportFiles = [];
 
     /**
      * Processed namespaces
      *
      * @var array
      */
-    private $importHeadNS = array();
+    private $importHeadNS = [];
 
 
     /**
@@ -196,7 +196,7 @@ class Xsd2Php extends Common
     public function getNamespaces($xpath) {
         $query   = "//namespace::*";
         $entries =  $xpath->query($query);
-        $nspaces = array();
+        $nspaces = [];
 
         foreach ($entries as $entry) {
             if ($entry->nodeValue == "http://www.w3.org/2001/XMLSchema") {
@@ -491,7 +491,7 @@ class Xsd2Php extends Common
          
         $classes = $xPath->query('//classes/class');
 
-        $sourceCode = array();
+        $sourceCode = [];
         foreach ($classes as $class) {
 
             $phpClass = new PHPClass($this->classPrefix);
@@ -509,7 +509,7 @@ class Xsd2Php extends Common
                 $phpClass->namespace = $class->getAttribute('namespace');
             }
             if ($class->getElementsByTagName('const')->length > 0) {
-                $array =  array();
+                $array =  [];
                 foreach ($class->getElementsByTagName('const') as $item) {
                     $array[] = (string)$item->getAttribute('value');
                 }
@@ -525,7 +525,7 @@ class Xsd2Php extends Common
             }
 
             $docs = $xPath->query('docs/doc', $class);
-            $docBlock = array();
+            $docBlock = [];
             //if ($phpClass->namespace != $this->xsdNs) {
 			if ($this->overrideAsSingleNamespace)
 	            $docBlock['xmlNamespace'] = $this->overrideAsSingleNamespace;
@@ -554,7 +554,7 @@ class Xsd2Php extends Common
             $phpClass->classDocBlock = $docBlock;
 
             $props      = $xPath->query('property', $class);
-            $properties = array();
+            $properties = [];
             $i = 0;
             $isArray = false;
             foreach($props as $prop) {
@@ -696,7 +696,7 @@ class Xsd2Php extends Common
          $ns = preg_replace('/\./', '\\',$ns);
          }*/
          
-        $matches = array();
+        $matches = [];
         if (preg_match("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#", $ns, $matches)) {
             $elements = explode("/", $matches[3]);
             $domain = $elements[0];
@@ -749,7 +749,7 @@ class Xsd2Php extends Common
         }
 
 
-        $matches = array();
+        $matches = [];
         if (preg_match("#((http|https|ftp)://(\S*?\.\S*?))(\s|\;|\)|\]|\[|\{|\}|,|\"|'|:|\<|$|\.\s)#", $ns, $matches)) {
             $elements = explode("/", $matches[3]);
             $domain = $elements[0];

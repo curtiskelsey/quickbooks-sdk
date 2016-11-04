@@ -1,4 +1,6 @@
 <?php
+
+namespace QuickBooks\DataService;
 /**
  * This file contains enumerations related to CRUD Operations and batch processing.
  */
@@ -17,28 +19,5 @@ class IntuitResponseStatus
 	 * Entity has been deleted.
 	 */
     const Deleted = 2;
-} 
- 
-
- 
-/**
- * type of batch response
- */
-class ResponseType
-{
-	/**
-	 * batch response has single entity 
-	 */
-    const Entity = 1;
-
-	/**
-	 * batch response has more than one enitity. 
-	 */
-    const Query = 2;
-
-	/**
-	 * batch response has exception.
-	 */
-    const Exception = 3;
-} 
+}
  

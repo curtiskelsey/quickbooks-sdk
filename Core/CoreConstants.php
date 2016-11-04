@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+namespace QuickBooks\Core;
 
 /**
  * Constants whose values do not change.

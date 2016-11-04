@@ -1,4 +1,7 @@
 <?php
+
+namespace QuickBooks\DataService;
+
 /**
  * This class processes the CDC request.
  */
@@ -21,14 +24,15 @@ class IntuitCDCResponse
 	 */
     public function __construct()
     {
-        $this->entities = array();
-        $this->exceptions = array();
+        $this->entities = [];
+        $this->exceptions = [];
     }
 
-	/**
-	 * Gets the List of entity value with particular key
-	 * @var string key
-	 */
+    /**
+     * Gets the List of entity value with particular key
+     * @var string key
+     * @return mixed|null
+     */
     public function getEntity($key)
     {
     	foreach($this->entities as $entityKey => $entityVal)
@@ -36,6 +40,6 @@ class IntuitCDCResponse
     		if ($entityKey==$key)
     			return $entityVal;
     	}
-    	return NULL;
+    	return null;
     }
 }

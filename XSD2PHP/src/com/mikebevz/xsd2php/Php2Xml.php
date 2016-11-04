@@ -116,10 +116,10 @@ class Php2Xml extends Common {
 	 */
     private function get_class_vars_fix_order($className) {
     
-    	$propNames = array();
+    	$propNames = [];
     	$parentClassName = get_parent_class($className);
     	
-    	$classMembersOnlyInherited = array();
+    	$classMembersOnlyInherited = [];
     	if ($parentClassName)
 	    	$classMembersOnlyInherited = $this->get_class_vars_fix_order(get_parent_class($className));
 
@@ -169,7 +169,7 @@ class Php2Xml extends Common {
 		// Beware: getProperties does not honor member order for members derived via inheritance
         $properties = $refl->getProperties();
         
-        $propDocs = array();
+        $propDocs = [];
         foreach ($properties as $prop) {
             $pDocs = $this->parseDocComments($prop->getDocComment());
             $propDocs[$prop->getName()] = $pDocs;

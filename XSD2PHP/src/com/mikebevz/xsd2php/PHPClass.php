@@ -137,7 +137,7 @@ class PHPClass extends Common {
         $code .= "\t".'{'."\n";
 
 		
-		$propNames = array();
+		$propNames = [];
 		foreach($this->classProperties as $oneProp)
 			$propNames[] = $oneProp['name'];
         $code .= ''."\n";
@@ -151,7 +151,7 @@ class PHPClass extends Common {
 		$code .= "\t\t".'* @param dictionary $keyValInitializers key/value pairs to be populated into object\'s properties '."\n";
 		$code .= "\t\t".'* @param boolean $verbose specifies whether object should echo warnings   '."\n";
 		$code .= "\t\t".'*/                                                                        '."\n";
-		$code .= "\t\t".'public function __construct($keyValInitializers=array(), $verbose=FALSE)'."\n";
+		$code .= "\t\t".'public function __construct($keyValInitializers=array(), $verbose=false)'."\n";
 		$code .= "\t\t".'{'."\n";
 	    $code .= "\t\t\t".'foreach($keyValInitializers as $initPropName => $initPropVal)'."\n";
 	    $code .= "\t\t\t".'{'."\n";
@@ -169,7 +169,7 @@ class PHPClass extends Common {
 
         $code .= ''."\n";
         if (in_array($this->type, $this->basicTypes)) {
-            $code .= "\t\t".$this->getDocBlock(array('xmlType'=>'value', 'var' => $this->normalizeType($this->type)), "\t\t");
+            $code .= "\t\t".$this->getDocBlock(['xmlType'=>'value', 'var' => $this->normalizeType($this->type)], "\t\t");
             $code .= "\t\tpublic ".'$value;';
         }
         
@@ -210,7 +210,7 @@ class PHPClass extends Common {
     
     
     public function getClassConstants($const, $indent = "\t") {
-        $code = array();
+        $code = [];
         
         foreach ($const as $value) {
             $code[] = $indent.'const ' . $this->constNameFromValue($value) . " = \"$value\";"  ;
@@ -222,7 +222,7 @@ class PHPClass extends Common {
 
     public function constNameFromValue($value)
     {    
-        return strtoupper(str_ireplace(array(" ","-"), "_",  $this->name. '_' . $value));
+        return strtoupper(str_ireplace([" ","-"], "_",  $this->name. '_' . $value));
     }
     
     /**

@@ -44,7 +44,7 @@ $taxRateDetails->TaxApplicableOn = "Sales";
 
 $taxService = new IPPTaxService();
 $taxService->TaxCode = 'MyTaxCodeName_' . $rnd;
-$taxService->TaxRateDetails = array($taxRateDetails);
+$taxService->TaxRateDetails = [$taxRateDetails];
 
 
 $result = $dataService->Add($taxService);
@@ -83,7 +83,7 @@ object(IPPTaxService)#40 (4) {
     }
   }
   ["Fault"]=>
-  NULL
+  null
 }
 
  */

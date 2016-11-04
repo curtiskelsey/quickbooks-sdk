@@ -1,5 +1,7 @@
 <?php
 
+namespace QuickBooks\Utility;
+
 /**
  * Constants whose values do not change.
  */

@@ -1,5 +1,7 @@
 <?php
 
+namespace QuickBooks\Utility\Serialization;
+
 /**
  * Entity serialize contract.
  * TODO this abstract class looks abandoned because, another class

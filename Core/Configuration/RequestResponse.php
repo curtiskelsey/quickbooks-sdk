@@ -1,5 +1,7 @@
 <?php
 
+namespace QuickBooks\Core\Configuration;
+
 /**
  * Contains properties common to Request and Response.
  */
@@ -23,7 +25,7 @@ class RequestResponse
 	 * @param SerializationFormat $SerializationFormat Serialization mechanism like Json, Xml.
 	 * @param CompressionFormat $CompressionFormat Compression Format like GZip, Deflate or None.
 	 */
-	public function __construct($SerializationFormat=NULL, $CompressionFormat=NULL)
+	public function __construct($SerializationFormat=null, $CompressionFormat=null)
 	{
 		$this->SerializationFormat = $SerializationFormat;
 		$this->CompressionFormat = $CompressionFormat;

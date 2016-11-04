@@ -152,7 +152,7 @@ class Bind extends Common {
                         {
                             if (!is_array($model->{$name})) //If this property is not already an array, then turn it into one
                             {
-                                $model->{$name} = array($model->{$name}, $this->bindXml($doc->saveXml(), new $className()));
+                                $model->{$name} = [$model->{$name}, $this->bindXml($doc->saveXml(), new $className())];
                             } else //If it is already an array then, just append to this array.
                             {
                                 array_push($model->{$name}, $this->bindXml($doc->saveXml(), new $className()));

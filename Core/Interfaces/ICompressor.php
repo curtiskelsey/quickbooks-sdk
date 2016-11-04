@@ -1,6 +1,8 @@
 <?php
 
-require_once(PATH_SDK_ROOT . 'Core/RestCalls/Compression/DataCompressionFormat.php');
+namespace QuickBooks\Core\Interfaces;
+
+use QuickBooks\Core\RestCalls\Compression\DataCompressionFormat;
 
 /**
  * Interface for compression methods.

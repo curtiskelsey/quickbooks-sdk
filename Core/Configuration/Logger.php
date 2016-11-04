@@ -2,9 +2,10 @@
 /**
  * This file contains Logger.
  */
-require_once(PATH_SDK_ROOT . 'Core/Configuration/RequestLog.php'); 
-require_once(PATH_SDK_ROOT . 'Diagnostics/Logger.php'); 
- 
+namespace QuickBooks\Core\Configuration;
+
+use QuickBooks\Diagnostics\Logger;
+
 /**
  * Contains properties used to set the Logging mechanism.
  * Special note: needed to avoid class name collision with

@@ -1,6 +1,8 @@
 <?php
 
-require_once(PATH_SDK_ROOT . 'Core/CoreConstants.php');
+namespace QuickBooks\Utility\Configuration;
+
+use QuickBooks\Core\CoreConstants;
 
 /**
  * This file is unique to the PHP SDK, it is designed to
@@ -9,54 +11,54 @@ require_once(PATH_SDK_ROOT . 'Core/CoreConstants.php');
  */
 class ConfigurationManager
 {
-    
-        private static function getSettignsFromFile()
-        {
-            $fileName = getcwd() . CoreConstants::SLASH_CHAR . "App.config";
-            return simplexml_load_file($fileName);            
-        }
-        
-        private static function getSettings($xmlObj, $xpath, $name = null)
-        {
- 		$result = $xmlObj->xpath($xpath);
-     
-		$returnVal = NULL;
-		if ($result && $result[0])
-		{
-			foreach($result[0]->attributes() as $attrName => $attrVal)
-			{
-                            switch($attrName) {
-                                case 'value': $returnVal = (string)$attrVal;
-                                              break 2; // break switch and foreach
-                                          
-                                case $name:   $returnVal = (string)$attrVal;
-                                              break 2; // break switch and foreach
-                                                  
-                            }
-	
-			}
-		}
-		
-		return $returnVal;           
+
+    private static function getSettignsFromFile()
+    {
+        $fileName = getcwd() . CoreConstants::SLASH_CHAR . "App.config";
+        return simplexml_load_file($fileName);
+    }
+
+    private static function getSettings($xmlObj, $xpath, $name = null)
+    {
+        $result = $xmlObj->xpath($xpath);
+
+        $returnVal = null;
+        if ($result && $result[0]) {
+            foreach ($result[0]->attributes() as $attrName => $attrVal) {
+                switch ($attrName) {
+                    case 'value':
+                        $returnVal = (string)$attrVal;
+                        break 2; // break switch and foreach
+
+                    case $name:
+                        $returnVal = (string)$attrVal;
+                        break 2; // break switch and foreach
+
+                }
+
+            }
         }
 
-        /**
-	 * App specific settings
-	 * @param string targetSetting
-	 */
-	public static function AppSettings($targetSetting)
-	{
-		$xmlObj = self::getSettignsFromFile();
-                return self::getSettings($xmlObj, '//appSettings/add[@key="'.$targetSetting.'"]');
+        return $returnVal;
+    }
 
-	}
-        
-        /**
-         * Get base url depends from the service
-         */
-        public static function BaseURLSettings($service)
-        {
-            $xmlObj = self::getSettignsFromFile();
-            return self::getSettings($xmlObj, '//baseUrl', $service);         
-        }
+    /**
+     * App specific settings
+     * @param string targetSetting
+     */
+    public static function AppSettings($targetSetting)
+    {
+        $xmlObj = self::getSettignsFromFile();
+        return self::getSettings($xmlObj, '//appSettings/add[@key="' . $targetSetting . '"]');
+
+    }
+
+    /**
+     * Get base url depends from the service
+     */
+    public static function BaseURLSettings($service)
+    {
+        $xmlObj = self::getSettignsFromFile();
+        return self::getSettings($xmlObj, '//baseUrl', $service);
+    }
 }

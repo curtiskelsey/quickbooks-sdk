@@ -1,5 +1,8 @@
 <?php
 
+namespace QuickBooks\Core;
+use QuickBooks\Exception\SdkException;
+
 /**
  * Writes temporary file 
  *
@@ -38,7 +41,7 @@ class ContentWriter {
      */
     private $handler = null;
     
-    public function __construct($content = NULL) {
+    public function __construct($content = null) {
         $this->content = $content;
     }
     
@@ -221,7 +224,7 @@ class ContentWriter {
         }
         try {
             $result = file_put_contents($this->tempPath, $this->getContent());
-        } catch(Exception $e) {
+        } catch(\Exception $e) {
             if(!is_writable($this->tempPath)) {
                 throw new SdkException("File ({$this->tempPath}) is not writable");
             }

@@ -1,7 +1,8 @@
-<?php 
+<?php
 
-require_once(PATH_SDK_ROOT . 'Security/RequestValidator.php');
-require_once(PATH_SDK_ROOT . 'Exception/SdkExceptions/InvalidTokenException.php');
+namespace QuickBooks\Security;
+
+use QuickBooks\Exception\SdkExceptions\InvalidTokenException;
 
 /**
  * OAuth implementation conforming to RequestValidator base class 
@@ -41,16 +42,17 @@ class OAuthRequestValidator extends RequestValidator
 	 * @var string 
 	 */
 	 public $ConsumerSecret;
-	 
 
-	/**
-	 * Initializes a new instance of the OAuthRequestValidator class.
-	 *
-	 * @param int $accessToken The access token.
-	 * @param int $accessTokenSecret The access token secret.
-	 * @param int $consumerKey The consumer key.
-	 * @param int $consumerSecret The consumer secret.
-	 */
+
+    /**
+     * Initializes a new instance of the OAuthRequestValidator class.
+     *
+     * @param int $accessToken The access token.
+     * @param int $accessTokenSecret The access token secret.
+     * @param int $consumerKey The consumer key.
+     * @param int $consumerSecret The consumer secret.
+     * @throws InvalidTokenException
+     */
 	public function OAuthRequestValidator($accessToken, $accessTokenSecret, $consumerKey, $consumerSecret)
 	{
 		if (empty($accessToken))

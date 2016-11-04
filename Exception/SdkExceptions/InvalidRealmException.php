@@ -1,5 +1,8 @@
-<?php 
-require_once(PATH_SDK_ROOT . 'Exception/SdkException.php');
+<?php
+
+namespace QuickBooks\Exception\SdkExceptions;
+
+use QuickBooks\Exception\SdkException;
 
 /**
  * Represents an Exception raised when an invalid realm id is encountered.
@@ -10,7 +13,7 @@ class InvalidRealmException extends SdkException
 	 * Initializes a new instance of the InvalidRealmException class.
 	 *
 	 * @param string $message string-based exception description
-	 * @param string $code exception code
+	 * @param int|string $code exception code
 	 */
     public function __construct($message, $code = 0) {
         parent::__construct($message, $code);
@@ -23,5 +26,3 @@ class InvalidRealmException extends SdkException
         return __CLASS__ . ": [{$this->code}]: {$this->message}\n";
     }
 }
-
-?>

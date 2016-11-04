@@ -1,5 +1,7 @@
 <?php
 
+namespace QuickBooks\Core\Configuration;
+
 /**
  * Contains properties used to indicate whether request and response messages are to be logged.
  */

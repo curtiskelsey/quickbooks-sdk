@@ -35,7 +35,7 @@ class Common {
 	protected $classPrefix;
 
     
-    public $basicTypes = array('decimal', 'base64Binary', 'normalizedString', 
+    public $basicTypes = ['decimal', 'base64Binary', 'normalizedString',
                                 'dateTime', 'date', 'boolean',
                                 'positiveInteger', 'anySimpleType',
                                 'anyURI', 'byte', 'double', 'duration', 
@@ -48,13 +48,13 @@ class Common {
                                 //'Name', 'NSName', 'NMTOKEN', 'NMTOKENS', 'NOTATION',
                                 'QName', 'short', 'string', 'time', 'token',
                                 'unsignedByte', 'unsignedInt', 'unsignedLong', 'unsignedShort'
-                                );
+    ];
                                 
-    public $phpTypes = array(
+    public $phpTypes = [
         'int', 'integer', 'float', 'string', 'boolean', 'bool', 'object'
-    );                       
+    ];
     
-    public $reservedWords = array (
+    public $reservedWords = [
         'and', 'or', 'xor', '__FILE__', 'exception',
         '__LINE__', 'array', 'as', 'break', 'case',
         'class', 'const', 'continue', 'declare', 'default',
@@ -70,7 +70,7 @@ class Common {
         'protected', 'abstract', 'clone', 'try', 'catch',
         'throw', 'this', 'final', '__NAMESPACE__', 'namespace', 'goto',
         '__DIR__'
-    );
+    ];
     
     public $namespaces = null;
     
@@ -107,7 +107,7 @@ class Common {
         
         
         $query = "namespace::*";
-        $nss = array();
+        $nss = [];
         $namespaces = $xpath->query($query);
         
         foreach ($namespaces as $node) {
@@ -135,7 +135,7 @@ class Common {
      */
     public function parseQName($qname, $resolveNamespace = false) {
         if (!preg_match('/:/', $qname)) {
-	        return array('', $qname);
+	        return ['', $qname];
             //throw new \RuntimeException("Given argument is not of QName type: ".$qname);    
         } 
         
@@ -146,7 +146,7 @@ class Common {
         }
         
         
-        return array($ns, $name);
+        return [$ns, $name];
     } 
     
     public function isQName($name) {
@@ -196,8 +196,8 @@ class Common {
      */
     public function parseDocComments($comments) {
         $comments = explode("\n", $comments);
-        $commentsOut = array();
-        $params = array();
+        $commentsOut = [];
+        $params = [];
         foreach ($comments as $com) {
             if (preg_match('/@/', $com)) {
                 $com = preg_replace('/\* /', '', $com);
@@ -225,7 +225,7 @@ class Common {
     
     public function parseParamDocs($string) {
         
-        $resp = array();
+        $resp = [];
         $data = explode(" ", $string, 3);
         //print_r($data);
         if (count($data) == 2) {
@@ -243,7 +243,7 @@ class Common {
     }
     
     public function parseReturnDocs($string) {
-        $resp = array();
+        $resp = [];
         $data = explode(" ", $string, 2);
         if (count($data) == 1) {
             $resp['type'] = $data[0];
@@ -261,7 +261,7 @@ class Common {
         // if namespace exists - just use its name
         // otherwise add it as nsatrribute to root and use its name 
         if (!is_array($this->namespaces)) {
-            $this->namespaces = array();
+            $this->namespaces = [];
         }
         if (array_key_exists($longNs, $this->namespaces)) {
             return $this->namespaces[$longNs];

@@ -1,5 +1,6 @@
 <?php
-namespace Intuit\Ipp\Utility\Serialization;
+
+namespace QuickBooks\Utility\Serialization;
 
 /**
  * Represents simple data type, which is string, integer or float

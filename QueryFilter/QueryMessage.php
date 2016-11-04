@@ -1,107 +1,104 @@
 <?php
+
+namespace QuickBooks\QueryFilter;
+
 /**
  * Class to have query message
  */
-class QueryMessage {
+class QueryMessage
+{
 
-	/**
-	 * variable SQL
-	 * @var string $sql
-	 */
-	public $sql;
+    /**
+     * variable SQL
+     * @var string $sql
+     */
+    public $sql;
 
-	
-	/**
-	 * variable Projection
-	 * @var array projection
-	 */
-	public $projection;
-	
-	/**
-	 * variable entity
-	 * @var string $entity
-	 */
-	public $entity;
-	
-	/**
-	 * variable whereClause
-	 * @var array whereClause
-	 */
-	public $whereClause;
-	
-	/**
-	 * variable startposition
-	 * @var int startposition
-	 */
-	public $startposition;
-	
-	/**
-	 * variable 
-	 * @var int maxresults
-	 */
-	public $maxresults;
-	
-	/**
-	 * variable orderByClause
-	 * @var string orderByClause
-	 */
-	public $orderByClause;
 
-	/**
-	 * Initialize a QueryMessage object
-	 */ 
-	public function __construct()
-	{
-		$projection = array();
-		$whereClause = array();
-	}
+    /**
+     * variable Projection
+     * @var array projection
+     */
+    public $projection;
 
-	/**
-	 * Get SQL query specified by object's members
-	 * @return string query
-	 */
-	public function getString() {
-	
-		if (empty($this->sql) || empty($this->entity))
-		{
-			return NULL;
-		}
+    /**
+     * variable entity
+     * @var string $entity
+     */
+    public $entity;
 
-		$query = "";		
-		$query .= $this->sql;		
+    /**
+     * variable whereClause
+     * @var array whereClause
+     */
+    public $whereClause;
 
-		if (0==count($this->projection)) {
-			$query .= " "."*";		
-		}
-		else
-		{
-			if (count($this->projection))
-			{
-				$query .= " " . implode(", ", $this->projection);		
-			}
-		}
-		
-		$query .= " FROM " . $this->entity;
-		
-		if (!empty($this->whereClause))
-		{
-			if (count($this->whereClause))
-			{
-				$query .= " WHERE " . implode(" AND ", $this->whereClause);		
-			}
-		}
+    /**
+     * variable startposition
+     * @var int startposition
+     */
+    public $startposition;
 
-		if (!empty($this->orderByClause))
-			$query .= " ORDERBY " . $this->orderByClause;
+    /**
+     * variable
+     * @var int maxresults
+     */
+    public $maxresults;
 
-		if (!empty($this->startposition))
-			$query .= " STARTPOSITION " . $this->startposition;
+    /**
+     * variable orderByClause
+     * @var string orderByClause
+     */
+    public $orderByClause;
 
-		if (!empty($this->maxresults))
-			$query .= " MAXRESULTS " . $this->maxresults;
+    /**
+     * Initialize a QueryMessage object
+     */
+    public function __construct()
+    {
+        $projection = [];
+        $whereClause = [];
+    }
 
-		return $query;
-	}
+    /**
+     * Get SQL query specified by object's members
+     * @return string query
+     */
+    public function getString()
+    {
+
+        if (empty($this->sql) || empty($this->entity)) {
+            return null;
+        }
+
+        $query = "";
+        $query .= $this->sql;
+
+        if (0 == count($this->projection)) {
+            $query .= " " . "*";
+        } else {
+            if (count($this->projection)) {
+                $query .= " " . implode(", ", $this->projection);
+            }
+        }
+
+        $query .= " FROM " . $this->entity;
+
+        if (!empty($this->whereClause)) {
+            if (count($this->whereClause)) {
+                $query .= " WHERE " . implode(" AND ", $this->whereClause);
+            }
+        }
+
+        if (!empty($this->orderByClause))
+            $query .= " ORDERBY " . $this->orderByClause;
+
+        if (!empty($this->startposition))
+            $query .= " STARTPOSITION " . $this->startposition;
+
+        if (!empty($this->maxresults))
+            $query .= " MAXRESULTS " . $this->maxresults;
+
+        return $query;
+    }
 }
-
-?>

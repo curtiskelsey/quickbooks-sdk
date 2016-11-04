@@ -1,4 +1,6 @@
-<?php 
+<?php
+
+namespace QuickBooks\Security;
 
 /**
 * Base class that all authentication mechanisms should inherit from

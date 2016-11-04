@@ -1,6 +1,6 @@
 <?php
 
-namespace Intuit\Ipp\Utility;
+namespace QuickBooks\Utility\Configuration;
 
 /**
  * This file contains serialization format enumeration.

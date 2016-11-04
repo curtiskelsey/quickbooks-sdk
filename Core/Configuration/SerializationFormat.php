@@ -1,5 +1,7 @@
 <?php
 
+namespace QuickBooks\Core\Configuration;
+
 /**
 * This file contains enumeration for serialization format.
 */

@@ -30,7 +30,7 @@ if (!$dataService)
 	exit("Problem while initializing DataService.\n");
 
 // Prepare entities for attachment upload
-$imageBase64 = array();
+$imageBase64 = [];
 $imageBase64['image/jpeg'] = "" . 
 	"/9j/4AAQSkZJRgABAQEAlgCWAAD/4ge4SUNDX1BST0ZJTEUAAQEAAAeoYXBwbAIgAABtbnRyUkdCIFhZ" . 
 	"WiAH2QACABkACwAaAAthY3NwQVBQTAAAAABhcHBsAAAAAAAAAAAAAAAAAAAAAAAA9tYAAQAAAADTLWFw" . 
@@ -104,8 +104,8 @@ if (!$billObj)
 
 // Create a new IPPAttachable
 $randId = rand();
-$entityRef = new IPPReferenceType(array('value'=>$billObj->Id, 'type'=>'Bill'));
-$attachableRef = new IPPAttachableRef(array('EntityRef'=>$entityRef));
+$entityRef = new IPPReferenceType(['value'=>$billObj->Id, 'type'=>'Bill']);
+$attachableRef = new IPPAttachableRef(['EntityRef'=>$entityRef]);
 $objAttachable = new IPPAttachable();
 $objAttachable->FileName = $randId.".jpg";
 $objAttachable->AttachableRef = $attachableRef;
@@ -122,37 +122,37 @@ $resultObj = $dataService->Upload(base64_decode($imageBase64[$sendMimeType]),
 function CreateBill($dataServices)
 {
 	// Query to find an expense account to attribute this expense to
-	$AccountArray=array();
+	$AccountArray= [];
 	$AccountArray['Expense'] = $dataServices->Query("SELECT * FROM Account WHERE AccountType='Expense'", 1,10);
 	if (!$AccountArray['Expense'])
-		return NULL;
+		return null;
 	$expenseAccountId = $AccountArray['Expense'][0]->Id;
 
 	// Query to find an Vendor to attribute this bill to
 	$VendorArray = $dataServices->Query("SELECT * FROM Vendor", 1,10);
 	if (!$VendorArray)
-		return NULL;
+		return null;
 	$vendorId = $VendorArray[0]->Id;
 				
 	// Create lines					
-	$PaymentLine = new IPPLine(array('Description'=>'some line item',
+	$PaymentLine = new IPPLine(['Description'=>'some line item',
 	                                 'Amount'     =>'7.50',
 	                                 'DetailType' =>'AccountBasedExpenseLineDetail',
 	                                 'AccountBasedExpenseLineDetail'=>
 	                                  	new IPPAccountBasedExpenseLineDetail(
-	                                  	    array('AccountRef'=>
-	                                  	        new IPPReferenceType(array('value'=>$expenseAccountId))
-	                                         )
+	                                  	    ['AccountRef'=>
+	                                  	        new IPPReferenceType(['value'=>$expenseAccountId])
+                                            ]
 	                                    ),
-	                                 )
+        ]
 	                          );	
 
 	// Create Bill Obj
 	$billObj = new IPPBill();
 	$billObj->Name = 'Bill' . rand();
-	$billObj->VendorRef = new IPPReferenceType(array('value'=>$vendorId));
+	$billObj->VendorRef = new IPPReferenceType(['value'=>$vendorId]);
 	$billObj->TotalAmt = '15.00';
-	$billObj->Line = array($PaymentLine,$PaymentLine);
+	$billObj->Line = [$PaymentLine,$PaymentLine];
 							
 	return $dataServices->Add($billObj);
 }
