@@ -18,24 +18,7 @@
   },
   "autoload": {
     "psr-4": {
-      "QuickBooks\\Core\\": "Core/",
-      "QuickBooks\\Core\\Configuration\\": "Core/Configuration/",
-      "QuickBooks\\Core\\Interface\\": "Core/Interface/",
-      "QuickBooks\\Core\\RestCalls\\": "Core/RestCalls/",
-      "QuickBooks\\Core\\Compression\\": "Core/RestCalls/Compression/",
-      "QuickBooks\\Data\\": "Data/",
-      "QuickBooks\\DataService\\": "DataService/",
-      "QuickBooks\\Diagnostics\\": "Diagnostics/",
-      "QuickBooks\\Exception\\": "Exception/",
-      "QuickBooks\\Exception\\SdkExceptions\\": "Exception/SdkExceptions/",
-      "QuickBooks\\Exception\\ServiceExceptions\\": "Exception/ServiceExceptions/",
-      "QuickBooks\\PlatformService\\": "PlatformService/",
-      "QuickBooks\\QueryFilter\\": "QueryFilter/",
-      "QuickBooks\\ReportService\\": "ReportService/",
-      "QuickBooks\\Security\\": "Security/",
-      "QuickBooks\\Utility\\": "Utility/",
-      "QuickBooks\\Utility\\Configuration\\": "Utility/Configuration/",
-      "QuickBooks\\Utility\\Serialization\\": "Utility/Serialization/"
+      "QuickBooks\\": "/"
     }
   }
 }
