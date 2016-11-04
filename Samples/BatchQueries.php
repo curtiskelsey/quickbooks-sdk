@@ -1,11 +1,12 @@
 <?php
 
-require_once('../config.php');
+use QuickBooks\Core\IntuitServicesType;
+use QuickBooks\Core\ServiceContext;
+use QuickBooks\DataService\DataService;
+use QuickBooks\Security\OAuthRequestValidator;
+use QuickBooks\Utility\Configuration\ConfigurationManager;
 
-require_once(PATH_SDK_ROOT . 'Core/ServiceContext.php');
-require_once(PATH_SDK_ROOT . 'DataService/DataService.php');
-require_once(PATH_SDK_ROOT . 'PlatformService/PlatformService.php');
-require_once(PATH_SDK_ROOT . 'Utility/Configuration/ConfigurationManager.php');
+require_once('../config.php');
 
 //Specify QBO or QBD
 $serviceType = IntuitServicesType::QBO;
@@ -13,21 +14,21 @@ $serviceType = IntuitServicesType::QBO;
 // Get App Config
 $realmId = ConfigurationManager::AppSettings('RealmID');
 if (!$realmId)
-	exit("Please add realm to App.Config before running this sample.\n");
+    exit("Please add realm to App.Config before running this sample.\n");
 
 // Prep Service Context
 $requestValidator = new OAuthRequestValidator(ConfigurationManager::AppSettings('AccessToken'),
-                                              ConfigurationManager::AppSettings('AccessTokenSecret'),
-                                              ConfigurationManager::AppSettings('ConsumerKey'),
-                                              ConfigurationManager::AppSettings('ConsumerSecret'));
+    ConfigurationManager::AppSettings('AccessTokenSecret'),
+    ConfigurationManager::AppSettings('ConsumerKey'),
+    ConfigurationManager::AppSettings('ConsumerSecret'));
 $serviceContext = new ServiceContext($realmId, $serviceType, $requestValidator);
 if (!$serviceContext)
-	exit("Problem while initializing ServiceContext.\n");
+    exit("Problem while initializing ServiceContext.\n");
 
 // Prep Data Services
 $dataService = new DataService($serviceContext);
 if (!$dataService)
-	exit("Problem while initializing DataService.\n");
+    exit("Problem while initializing DataService.\n");
 
 // Run a batch
 $maxSearch = 500;
@@ -49,5 +50,3 @@ Example output:
 Looked for up to 500 customers; found 318
 Looked for up to 500 vendors; found 278
 */
-
-?>

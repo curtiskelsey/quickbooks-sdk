@@ -1,16 +1,19 @@
 <?php
 /***
  *  PLEASE FIX ME!!
- * 
- * 
- * 
+ *
+ *
+ *
  */
-require_once('../config.php');
+use Intuit\Data\IPPTaxRateDetails;
+use Intuit\Data\IPPTaxService;
+use QuickBooks\Core\IntuitServicesType;
+use QuickBooks\Core\ServiceContext;
+use QuickBooks\DataService\DataService;
+use QuickBooks\Security\OAuthRequestValidator;
+use QuickBooks\Utility\Configuration\ConfigurationManager;
 
-require_once(PATH_SDK_ROOT . 'Core/ServiceContext.php');
-require_once(PATH_SDK_ROOT . 'DataService/DataService.php');
-require_once(PATH_SDK_ROOT . 'PlatformService/PlatformService.php');
-require_once(PATH_SDK_ROOT . 'Utility/Configuration/ConfigurationManager.php');
+require_once('../config.php');
 
 //Specify QBO or QBD
 $serviceType = IntuitServicesType::QBO;
@@ -48,11 +51,11 @@ $taxService->TaxRateDetails = [$taxRateDetails];
 
 
 $result = $dataService->Add($taxService);
-if(empty($result)) {
+if (empty($result)) {
     echo "\n Something was wrong. Please check logs";
 } else {
     print_r($result);
-    
+
 }
 
 
@@ -60,30 +63,29 @@ if(empty($result)) {
 # Var-dump output
 ####
 /**
- * 
-object(IPPTaxService)#40 (4) {
-  ["TaxCode"]=>
-  string(23) "MyTaxCodeName_482378853"
-  ["TaxCodeId"]=>
-  string(2) "11"
-  ["TaxRateDetails"]=>
-  array(1) {
-    [0]=>
-    object(IPPTaxRateDetails)#61 (5) {
-      ["TaxRateName"]=>
-      string(26) "myNewTaxRateName_482378853"
-      ["TaxRateId"]=>
-      string(2) "21"
-      ["RateValue"]=>
-      int(7)
-      ["TaxAgencyId"]=>
-      string(1) "1"
-      ["TaxApplicableOn"]=>
-      string(5) "Sales"
-    }
-  }
-  ["Fault"]=>
-  null
-}
-
+ *
+ * object(IPPTaxService)#40 (4) {
+ * ["TaxCode"]=>
+ * string(23) "MyTaxCodeName_482378853"
+ * ["TaxCodeId"]=>
+ * string(2) "11"
+ * ["TaxRateDetails"]=>
+ * array(1) {
+ * [0]=>
+ * object(IPPTaxRateDetails)#61 (5) {
+ * ["TaxRateName"]=>
+ * string(26) "myNewTaxRateName_482378853"
+ * ["TaxRateId"]=>
+ * string(2) "21"
+ * ["RateValue"]=>
+ * int(7)
+ * ["TaxAgencyId"]=>
+ * string(1) "1"
+ * ["TaxApplicableOn"]=>
+ * string(5) "Sales"
+ * }
+ * }
+ * ["Fault"]=>
+ * null
+ * }
  */

@@ -1,11 +1,15 @@
 <?php
 
-require_once('../config.php');
+use Intuit\Data\IPPReferenceType;
+use Intuit\Data\IPPTransfer;
+use QuickBooks\Core\IntuitServicesType;
+use QuickBooks\Core\ServiceContext;
+use QuickBooks\DataService\DataService;
+use QuickBooks\Security\OAuthRequestValidator;
+use QuickBooks\Utility\Configuration\ConfigurationManager;
+use QuickBooks\Utility\Configuration\SerializationFormat;
 
-require_once(PATH_SDK_ROOT . 'Core/ServiceContext.php');
-require_once(PATH_SDK_ROOT . 'DataService/DataService.php');
-require_once(PATH_SDK_ROOT . 'PlatformService/PlatformService.php');
-require_once(PATH_SDK_ROOT . 'Utility/Configuration/ConfigurationManager.php');
+require_once('../config.php');
 
 //Specify QBO or QBD
 $serviceType = IntuitServicesType::QBO;
@@ -43,33 +47,34 @@ print_r($result);
 ################################################################################
 # Domain Objects example                                                       #
 ################################################################################
-function createTransfer() {
-    
+function createTransfer()
+{
+
     $from = new IPPReferenceType();
     $from->name = "Checking";
     $from->value = 35;
-    
+
     $to = new IPPReferenceType();
     $to->name = "Savings";
-    $to->value = 36;    
-    
+    $to->value = 36;
+
     $transfer = new IPPTransfer();
     $transfer->FromAccountRef = $from;
     $transfer->ToAccountRef = $to;
     $transfer->Amount = 10;
-            
+
     return $transfer;
 }
 
 /**
- * Output function 
+ * Output function
  */
 function showMe($entity)
 {
-$className = get_class($entity); 
+    $className = get_class($entity);
 
 
-return <<<OUTTEXT
+    return <<<OUTTEXT
 Hi!
 I am an instance of $className object. 
 And I state that transfer was perfromed from "{$entity->FromAccountRef->name}" (id={$entity->FromAccountRef->name})
@@ -80,5 +85,5 @@ My id is {$entity->Id} and this was for {$entity->domain} domain.
 See my whole object:
 
 OUTTEXT;
-   
+
 }

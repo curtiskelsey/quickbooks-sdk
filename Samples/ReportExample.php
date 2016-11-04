@@ -1,13 +1,13 @@
 <?php
 
+use QuickBooks\Core\IntuitServicesType;
+use QuickBooks\Core\ServiceContext;
+use QuickBooks\ReportService\ReportName;
+use QuickBooks\ReportService\ReportService;
+use QuickBooks\Security\OAuthRequestValidator;
+use QuickBooks\Utility\Configuration\ConfigurationManager;
+
 require_once('../config.php');
-
-require_once(PATH_SDK_ROOT . 'Core/ServiceContext.php');
-require_once(PATH_SDK_ROOT . 'ReportService/ReportService.php');
-require_once(PATH_SDK_ROOT . 'ReportService/ReportName.php');
-require_once(PATH_SDK_ROOT . 'PlatformService/PlatformService.php');
-require_once(PATH_SDK_ROOT . 'Utility/Configuration/ConfigurationManager.php');
-
 
 //Specify QBO or QBD
 $serviceType = IntuitServicesType::QBO;

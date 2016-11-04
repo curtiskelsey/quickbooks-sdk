@@ -1,11 +1,12 @@
 <?php
 
-require_once('../config.php');
+use QuickBooks\Core\IntuitServicesType;
+use QuickBooks\Core\ServiceContext;
+use QuickBooks\DataService\DataService;
+use QuickBooks\Security\OAuthRequestValidator;
+use QuickBooks\Utility\Configuration\ConfigurationManager;
 
-require_once(PATH_SDK_ROOT . 'Core/ServiceContext.php');
-require_once(PATH_SDK_ROOT . 'DataService/DataService.php');
-require_once(PATH_SDK_ROOT . 'PlatformService/PlatformService.php');
-require_once(PATH_SDK_ROOT . 'Utility/Configuration/ConfigurationManager.php');
+require_once('../config.php');
 
 //Specify QBO or QBD
 $serviceType = IntuitServicesType::QBO;
@@ -49,5 +50,3 @@ TaxRate[1] Name: NOTAXS	Rate 0 AgencyRef 1 (SpecialTaxType NO_TAX)
 TaxRate[2] Name: Purchase EC 2%	Rate 2 AgencyRef 3 (SpecialTaxType NONE)
 TaxRate[3] Name: Purchase HEC 1%	Rate 1 AgencyRef 3 (SpecialTaxType NONE)
 */
-
-?>
